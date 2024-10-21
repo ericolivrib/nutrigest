@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NutrigestApplication {
+public class NutriGestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NutrigestApplication.class, args);
+		SpringApplication.run(NutriGestApplication.class, args);
 	}
 
 }
