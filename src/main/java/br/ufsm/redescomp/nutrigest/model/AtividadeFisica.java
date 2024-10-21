@@ -11,22 +11,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "historicos_saude")
-public class HistoricoSaude {
+@Table(name = "atividades_fisicas")
+public class AtividadeFisica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "historico_id")
+    @Column(name = "atividade_id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
-    @Column(name = "condicao_medica")
-    private String condicaoMedica;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo")
+    private TipoAtividade tipo;
 
-    @Column(name = "alergias")
-    private String alergias;
+    @Column(name = "duracao")
+    private Integer duracao;
+
+    @Column(name = "calorias_queimadas")
+    private Integer caloriasQueimadas;
 
 }

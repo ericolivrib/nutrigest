@@ -25,6 +25,9 @@ public class Pessoa {
     @Column(name = "nome")
     private String nome;
 
+    @Column(name = "telefone")
+    private String telefone;
+
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 

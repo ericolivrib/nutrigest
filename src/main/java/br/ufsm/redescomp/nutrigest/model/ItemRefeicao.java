@@ -1,7 +1,6 @@
 package br.ufsm.redescomp.nutrigest.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,23 +11,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "alimentos")
-public class Alimentos {
+@Table(name = "itens_refeicoes")
+public class ItemRefeicao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "alimento_id")
+    @Column(name = "item_id")
     private Long id;
 
-    @Column(name = "nome")
-    private String nome;
+    @ManyToOne
+    @JoinColumn(name = "refeicao_id")
+    private Refeicao refeicao;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categoria")
-    private CategoriaAlimento categoria;
+    @ManyToOne
+    @JoinColumn(name = "alimento_id")
+    private Alimento alimento;
 
-    @Column(name = "porcao")
-    private Integer porcao;
+    @Column(name = "quantidade")
+    private Integer quantidade;
 
     @Column(name = "calorias")
     private Integer calorias;
@@ -41,14 +41,5 @@ public class Alimentos {
 
     @Column(name = "gorduras")
     private Integer gorduras;
-
-    @Column(name = "vitaminas")
-    private String vitaminas;
-
-    @Column(name = "minerais")
-    private String minerais;
-
-    @Column(name = "indice_glicemico")
-    private Integer indiceGlicemico;
 
 }
