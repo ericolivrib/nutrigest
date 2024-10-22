@@ -49,10 +49,10 @@ public class Pessoa {
     private String objetivo;
 
     @OneToMany(mappedBy = "pessoa")
-    private List<Preferencia> preferencias;
+    private List<PreferenciaAlimentar> preferenciasAlimentares;
 
     @OneToMany(mappedBy = "pessoa")
-    private List<Preferencia> historicosSaude;
+    private List<PreferenciaAlimentar> historicosSaude;
 
     @OneToMany(mappedBy = "pessoa")
     private List<Refeicao> refeicoes;

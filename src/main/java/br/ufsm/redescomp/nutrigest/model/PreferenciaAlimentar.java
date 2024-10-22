@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "preferencias")
-public class Preferencia {
+public class PreferenciaAlimentar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
