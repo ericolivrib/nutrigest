@@ -10,20 +10,16 @@ public final class PessoaEntityMapper {
     }
 
     public static Pessoa mapToEntity(PessoaRequest dto) {
-        return new Pessoa(
-                null,
-                dto.nome(),
-                dto.telefone(),
-                dto.dataNascimento(),
-                dto.genero(),
-                dto.altura(),
-                dto.peso(),
-                dto.nivelAtividade(),
-                dto.objetivo(),
-                null,
-                null,
-                null
-        );
+        return Pessoa.builder()
+                .nome(dto.nome())
+                .telefone(dto.telefone())
+                .dataNascimento(dto.dataNascimento())
+                .genero(dto.genero())
+                .altura(dto.altura())
+                .peso(dto.peso())
+                .nivelAtividade(dto.nivelAtividade())
+                .objetivo(dto.objetivo())
+                .build();
     }
 
     public static PessoaResponse mapFromEntity(Pessoa pessoa) {
