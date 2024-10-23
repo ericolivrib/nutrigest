@@ -38,8 +38,14 @@ public class PessoaController {
     }
 
     @PutMapping("/v1/pessoas/{id}")
-    public ResponseEntity<PessoaRequest> atualizarPessoa(@PathVariable("id") Long id, @RequestBody PessoaRequest request) {
+    public ResponseEntity<Void> atualizarPessoa(@PathVariable("id") Long id, @RequestBody PessoaRequest request) {
         pessoaService.atualizarPessoa(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/v1/pessoas/{id}")
+    public ResponseEntity<Void> deletarPessoa(@PathVariable("id") Long id) {
+        pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();
     }
 
