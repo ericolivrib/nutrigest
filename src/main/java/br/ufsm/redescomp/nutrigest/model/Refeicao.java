@@ -27,8 +27,8 @@ public class Refeicao {
     private Pessoa pessoa;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "horario")
-    private HorarioRefeicao horario;
+    @Column(name = "periodo")
+    private PeriodoRefeicao periodo;
 
     @Column(name = "data")
     private LocalDate data;

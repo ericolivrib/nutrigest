@@ -1,5 +1,5 @@
 package br.ufsm.redescomp.nutrigest.model;
 
-public enum HorarioRefeicao {
+public enum PeriodoRefeicao {
     CAFE_DA_MANHA, ALMOCO, JANTAR
 }
