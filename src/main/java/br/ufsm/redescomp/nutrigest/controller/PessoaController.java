@@ -1,16 +1,15 @@
 package br.ufsm.redescomp.nutrigest.controller;
 
-import br.ufsm.redescomp.nutrigest.dto.AdicionarPessoaRequest;
+import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
+import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
 import br.ufsm.redescomp.nutrigest.service.PessoaService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/pessoas")
 public class PessoaController {
 
     private final PessoaService pessoaService;
@@ -19,14 +18,29 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> adicionarPessoa(@RequestBody AdicionarPessoaRequest request, UriComponentsBuilder uriBuilder) {
-        pessoaService.adicionarPessoa(request);
-
-        var location = uriBuilder.path("/pessoas/{id}")
-                .buildAndExpand(1)
-                .toUri();
+    @PostMapping("/v1/pessoas")
+    public ResponseEntity<Void> adicionarPessoa(@RequestBody PessoaRequest request, UriComponentsBuilder uriBuilder) {
+        var pessoaId = pessoaService.adicionarPessoa(request);
+        var location = uriBuilder.path("/pessoas/{id}").buildAndExpand(pessoaId).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/v1/pessoas")
+    public ResponseEntity<List<PessoaResponse>> getPessoas() {
+        var response = pessoaService.getPessoas();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v1/pessoas/{id}")
+    public ResponseEntity<PessoaResponse> getPessoaById(@PathVariable("id") Long id) {
+        var response = pessoaService.getPessoaById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/v1/pessoas/{id}")
+    public ResponseEntity<PessoaRequest> atualizarPessoa(@PathVariable("id") Long id, @RequestBody PessoaRequest request) {
+        pessoaService.atualizarPessoa(id, request);
+        return ResponseEntity.noContent().build();
     }
 
 }

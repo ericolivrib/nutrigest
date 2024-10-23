@@ -5,7 +5,7 @@ import br.ufsm.redescomp.nutrigest.model.NivelAtividade;
 
 import java.time.LocalDate;
 
-public record AdicionarPessoaRequest(
+public record PessoaRequest(
         String nome,
         String telefone,
         String objetivo,

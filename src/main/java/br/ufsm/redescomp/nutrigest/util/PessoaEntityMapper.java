@@ -1,15 +1,15 @@
 package br.ufsm.redescomp.nutrigest.util;
 
-import br.ufsm.redescomp.nutrigest.dto.AdicionarPessoaRequest;
+import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
 import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
 import br.ufsm.redescomp.nutrigest.model.Pessoa;
 
-public final class PessoaMapper {
+public final class PessoaEntityMapper {
 
-    private PessoaMapper() {
+    private PessoaEntityMapper() {
     }
 
-    public static Pessoa mapToEntity(AdicionarPessoaRequest dto) {
+    public static Pessoa mapToEntity(PessoaRequest dto) {
         return new Pessoa(
                 null,
                 dto.nome(),
@@ -26,7 +26,7 @@ public final class PessoaMapper {
         );
     }
 
-    public static PessoaResponse mapToDto(Pessoa pessoa) {
+    public static PessoaResponse mapFromEntity(Pessoa pessoa) {
         return new PessoaResponse(
                 pessoa.getId(),
                 pessoa.getNome(),
