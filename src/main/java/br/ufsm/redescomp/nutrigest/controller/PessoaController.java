@@ -3,6 +3,7 @@ package br.ufsm.redescomp.nutrigest.controller;
 import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
 import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
 import br.ufsm.redescomp.nutrigest.service.PessoaService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,6 +19,7 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
+    @Transactional
     @PostMapping("/v1/pessoas")
     public ResponseEntity<Void> adicionarPessoa(@RequestBody PessoaRequest request, UriComponentsBuilder uriBuilder) {
         var pessoaId = pessoaService.adicionarPessoa(request);
@@ -37,12 +39,14 @@ public class PessoaController {
         return ResponseEntity.ok(response);
     }
 
+    @Transactional
     @PutMapping("/v1/pessoas/{id}")
     public ResponseEntity<Void> atualizarPessoa(@PathVariable("id") Long id, @RequestBody PessoaRequest request) {
         pessoaService.atualizarPessoa(id, request);
         return ResponseEntity.noContent().build();
     }
 
+    @Transactional
     @DeleteMapping("/v1/pessoas/{id}")
     public ResponseEntity<Void> deletarPessoa(@PathVariable("id") Long id) {
         pessoaService.deletarPessoa(id);
