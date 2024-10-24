@@ -4,6 +4,7 @@ import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
 import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
 import br.ufsm.redescomp.nutrigest.service.PessoaService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,9 +22,9 @@ public class PessoaController {
 
     @Transactional
     @PostMapping("/v1/pessoas")
-    public ResponseEntity<Void> adicionarPessoa(@RequestBody PessoaRequest request, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Void> adicionarPessoa(@RequestBody @Valid PessoaRequest request, UriComponentsBuilder uriBuilder) {
         var pessoaId = pessoaService.adicionarPessoa(request);
-        var location = uriBuilder.path("/pessoas/{id}").buildAndExpand(pessoaId).toUri();
+        var location = uriBuilder.path("/v1/pessoas/{id}").buildAndExpand(pessoaId).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -41,7 +42,7 @@ public class PessoaController {
 
     @Transactional
     @PutMapping("/v1/pessoas/{id}")
-    public ResponseEntity<Void> atualizarPessoa(@PathVariable("id") Long id, @RequestBody PessoaRequest request) {
+    public ResponseEntity<Void> atualizarPessoa(@PathVariable("id") Long id, @RequestBody @Valid PessoaRequest request) {
         pessoaService.atualizarPessoa(id, request);
         return ResponseEntity.noContent().build();
     }
