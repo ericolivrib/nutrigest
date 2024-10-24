@@ -50,9 +50,17 @@ public class Pessoa {
     private List<PreferenciaAlimentar> preferenciasAlimentares;
 
     @OneToMany(mappedBy = "pessoa")
-    private List<PreferenciaAlimentar> historicosSaude;
+    private List<PlanoAlimentar> planosAlimentares;
+
+    @OneToMany(mappedBy = "pessoa")
+    private List<HistoricoSaude> historicosSaude;
 
     @OneToMany(mappedBy = "pessoa")
     private List<Refeicao> refeicoes;
 
+    @OneToMany(mappedBy = "pessoa")
+    private List<AtividadeFisica> atividadesFisicas;
+
+    @OneToMany(mappedBy = "pessoas")
+    private List<Progresso> progressos;
 }
