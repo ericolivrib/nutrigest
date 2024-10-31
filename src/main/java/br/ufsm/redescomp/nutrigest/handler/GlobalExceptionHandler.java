@@ -37,7 +37,9 @@ public class GlobalExceptionHandler {
             ));
         }
 
-        return ResponseEntity.badRequest().body(errors);
+        return errors != null
+                ? ResponseEntity.badRequest().body(errors)
+                : ResponseEntity.badRequest().build();
     }
 
 }
