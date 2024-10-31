@@ -61,6 +61,7 @@ public class Pessoa {
     @OneToMany(mappedBy = "pessoa")
     private List<AtividadeFisica> atividadesFisicas;
 
-    @OneToMany(mappedBy = "pessoas")
+    @OneToMany(mappedBy = "pessoa")
     private List<Progresso> progressos;
+
 }
