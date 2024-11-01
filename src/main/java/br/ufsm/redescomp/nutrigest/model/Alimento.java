@@ -1,15 +1,13 @@
 package br.ufsm.redescomp.nutrigest.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -31,6 +29,7 @@ public class Alimento {
     @Column(name = "porcao")
     private Integer porcao;
 
+    // FIXME: Alterar tipo para Double
     @Column(name = "calorias")
     private Integer calorias;
 
@@ -40,12 +39,15 @@ public class Alimento {
     @Column(name = "proteinas")
     private Integer proteinas;
 
+    // FIXME: Alterar nome para percentualGordura
     @Column(name = "gorduras")
     private Integer gorduras;
 
+    // FIXME: Alterar tipo para List<String> (DTOs)
     @Column(name = "vitaminas")
     private String vitaminas;
 
+    // FIXME: Alterar tipo para List<String> (DTOs)
     @Column(name = "minerais")
     private String minerais;
 
