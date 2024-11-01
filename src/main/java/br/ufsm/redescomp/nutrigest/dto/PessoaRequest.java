@@ -2,6 +2,7 @@ package br.ufsm.redescomp.nutrigest.dto;
 
 import br.ufsm.redescomp.nutrigest.model.Genero;
 import br.ufsm.redescomp.nutrigest.model.NivelAtividade;
+import br.ufsm.redescomp.nutrigest.model.Pessoa;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -35,4 +36,17 @@ public record PessoaRequest(
         @NotNull(message = "Nível de atividade é obrigatório")
         NivelAtividade nivelAtividade
 ) {
+        
+        public Pessoa mapToEntity() {
+                return Pessoa.builder()
+                        .nome(this.nome())
+                        .telefone(this.telefone())
+                        .dataNascimento(this.dataNascimento())
+                        .genero(this.genero())
+                        .altura(this.altura())
+                        .peso(this.peso())
+                        .nivelAtividade(this.nivelAtividade())
+                        .objetivo(this.objetivo())
+                        .build();
+        }
 }

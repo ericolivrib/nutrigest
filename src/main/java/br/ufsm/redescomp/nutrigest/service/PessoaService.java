@@ -3,7 +3,6 @@ package br.ufsm.redescomp.nutrigest.service;
 import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
 import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
 import br.ufsm.redescomp.nutrigest.repository.PessoaRepository;
-import br.ufsm.redescomp.nutrigest.util.PessoaEntityMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,19 +17,19 @@ public class PessoaService {
     }
 
     public Long adicionarPessoa(PessoaRequest pessoa) {
-        var p =  pessoaRepository.save(PessoaEntityMapper.mapToEntity(pessoa));
+        var p =  pessoaRepository.save(pessoa.mapToEntity());
         return p.getId();
     }
 
     public List<PessoaResponse> getPessoas() {
         return pessoaRepository.findAll()
                 .stream()
-                .map(PessoaEntityMapper::mapFromEntity)
+                .map(PessoaResponse::mapFromEntity)
                 .toList();
     }
 
     public PessoaResponse getPessoaById(Long id) {
-        return PessoaEntityMapper.mapFromEntity(pessoaRepository.findById(id).orElseThrow());
+        return PessoaResponse.mapFromEntity(pessoaRepository.findById(id).orElseThrow());
     }
 
     public void atualizarPessoa(Long id, PessoaRequest pessoa) {

@@ -2,6 +2,7 @@ package br.ufsm.redescomp.nutrigest.dto;
 
 import br.ufsm.redescomp.nutrigest.model.Genero;
 import br.ufsm.redescomp.nutrigest.model.NivelAtividade;
+import br.ufsm.redescomp.nutrigest.model.Pessoa;
 
 import java.time.LocalDate;
 
@@ -16,4 +17,18 @@ public record PessoaResponse(
         Genero genero,
         NivelAtividade nivelAtividade
 ) {
+
+    public static PessoaResponse mapFromEntity(Pessoa pessoa) {
+        return new PessoaResponse(
+                pessoa.getId(),
+                pessoa.getNome(),
+                pessoa.getTelefone(),
+                pessoa.getObjetivo(),
+                pessoa.getAltura(),
+                pessoa.getPeso(),
+                pessoa.getDataNascimento(),
+                pessoa.getGenero(),
+                pessoa.getNivelAtividade()
+        );
+    }
 }
