@@ -3,9 +3,11 @@ package br.ufsm.redescomp.nutrigest.dto;
 import br.ufsm.redescomp.nutrigest.model.PeriodoRefeicao;
 import br.ufsm.redescomp.nutrigest.model.Pessoa;
 import br.ufsm.redescomp.nutrigest.model.Refeicao;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record RefeicaoRequest(
         @NotNull(message = "ID do usuário é obrigatório")
@@ -17,28 +19,27 @@ public record RefeicaoRequest(
         @NotNull(message = "Data é obrigatória")
         LocalDate data,
 
-        @NotNull(message = "Proteínas totais são obrigatórias")
-        Integer proteinasTotais,
-
-        @NotNull(message = "Calorias totais são obrigatórias")
-        Integer caloriasTotais,
-
-        @NotNull(message = "Gorduras totais são obrigatórias")
-        Integer gordurasTotais,
-
-        @NotNull(message = "Carboidratos totais são obrigatórias")
-        Integer carboidratosTotais
+        @NotEmpty(message = "Itens são obrigatórios")
+        List<ItemRefeicaoRequest> itens
 ) {
 
     public Refeicao mapToEntity() {
+        int carboidratosTotais = itens.stream().map(ItemRefeicaoRequest::carboidratos).reduce(0, Integer::sum);
+        int caloriasTotais = itens.stream().map(ItemRefeicaoRequest::calorias).reduce(0, Integer::sum);
+        int proteinasTotais = itens.stream().map(ItemRefeicaoRequest::proteinas).reduce(0, Integer::sum);
+        int gordurasTotais = itens.stream().map(ItemRefeicaoRequest::gorduras).reduce(0, Integer::sum);
+
         return Refeicao.builder()
                 .pessoa(Pessoa.builder().id(pessoaId).build())
                 .periodo(periodo)
                 .data(data)
-                .proteinasTotais(proteinasTotais)
-                .caloriasTotais(caloriasTotais)
-                .gordurasTotais(gordurasTotais)
+                .itens(itens.stream().map(ItemRefeicaoRequest::mapToEntity).toList())
                 .carboidratosTotais(carboidratosTotais)
+                .caloriasTotais(caloriasTotais)
+                .proteinasTotais(proteinasTotais)
+                .gordurasTotais(gordurasTotais)
                 .build();
     }
+
+
 }
