@@ -1,7 +1,7 @@
 package br.ufsm.redescomp.nutrigest.service;
 
-import br.ufsm.redescomp.nutrigest.dto.AlimentoRequest;
-import br.ufsm.redescomp.nutrigest.dto.AlimentoResponse;
+import br.ufsm.redescomp.nutrigest.dto.AlimentoDto;
+import br.ufsm.redescomp.nutrigest.model.Alimento;
 import br.ufsm.redescomp.nutrigest.repository.AlimentoRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,36 +16,46 @@ public class AlimentoService {
         this.alimentoRepository = alimentoRepository;
     }
 
-    public Long adicionarAlimento(AlimentoRequest alimento) {
-        var a = alimentoRepository.save(alimento.mapToEntity());
-        return a.getId();
+    public void adicionarAlimento(Alimento alimento) {
+        alimentoRepository.save(Alimento.builder()
+                .nome(alimento.getNome())
+                .categoria(alimento.getCategoria())
+                .porcao(alimento.getPorcao())
+                .proteinas(alimento.getProteinas())
+                .calorias(alimento.getCalorias())
+                .gorduras(alimento.getGorduras())
+                .carboidratos(alimento.getCarboidratos())
+                .vitaminas(alimento.getVitaminas())
+                .minerais(alimento.getMinerais())
+                .indiceGlicemico(alimento.getIndiceGlicemico())
+                .build());
     }
 
-    public List<AlimentoResponse> getAlimentos() {
+    public List<AlimentoDto> getAlimentos() {
         return alimentoRepository.findAll()
                 .stream()
-                .map(AlimentoResponse::mapFromEntity)
+                .map(AlimentoDto::new)
                 .toList();
     }
 
-    public AlimentoResponse getAlimentoById(Long id) {
+    public AlimentoDto getAlimentoById(Long id) {
         var alimento = alimentoRepository.findById(id).orElseThrow();
-        return AlimentoResponse.mapFromEntity(alimento);
+        return new AlimentoDto(alimento);
     }
 
-    public void atualizarAlimento(Long id, AlimentoRequest alimento) {
+    public void atualizarAlimento(Long id, Alimento alimento) {
         var a = alimentoRepository.findById(id).orElseThrow();
 
-        a.setNome(alimento.nome());
-        a.setCategoria(alimento.categoria());
-        a.setPorcao(alimento.porcao());
-        a.setProteinas(alimento.proteinas());
-        a.setCalorias(alimento.calorias());
-        a.setGorduras(alimento.gorduras());
-        a.setCarboidratos(alimento.carboidratos());
-        a.setVitaminas(alimento.vitaminas());
-        a.setMinerais(alimento.minerais());
-        a.setIndiceGlicemico(alimento.indiceGlicemico());
+        a.setNome(alimento.getNome());
+        a.setCategoria(alimento.getCategoria());
+        a.setPorcao(alimento.getPorcao());
+        a.setProteinas(alimento.getProteinas());
+        a.setCalorias(alimento.getCalorias());
+        a.setGorduras(alimento.getGorduras());
+        a.setCarboidratos(alimento.getCarboidratos());
+        a.setVitaminas(alimento.getVitaminas());
+        a.setMinerais(alimento.getMinerais());
+        a.setIndiceGlicemico(alimento.getIndiceGlicemico());
 
         alimentoRepository.save(a);
     }

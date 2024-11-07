@@ -1,6 +1,6 @@
 package br.ufsm.redescomp.nutrigest.handler;
 
-import br.ufsm.redescomp.nutrigest.dto.FieldErrorResponse;
+import br.ufsm.redescomp.nutrigest.dto.FieldErrorDto;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -22,16 +22,16 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class
     })
-    public ResponseEntity<List<FieldErrorResponse>> handle400BadRequestError(Exception e) {
-        List<FieldErrorResponse> errors = null;
+    public ResponseEntity<List<FieldErrorDto>> handle400BadRequestError(Exception e) {
+        List<FieldErrorDto> errors = null;
 
         if (e instanceof MethodArgumentNotValidException exception) {
             errors = exception.getBindingResult().getFieldErrors()
                     .stream()
-                    .map(f -> new FieldErrorResponse(f.getField(), Objects.requireNonNull(f.getDefaultMessage())))
+                    .map(FieldErrorDto::new)
                     .toList();
         } else if (e.getCause() instanceof MismatchedInputException exception) {
-            errors = List.of(new FieldErrorResponse(
+            errors = List.of(new FieldErrorDto(
                     exception.getPath().getFirst().getFieldName(),
                     "É esperado um valor de tipo " + exception.getTargetType().getSimpleName()
             ));

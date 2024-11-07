@@ -1,7 +1,7 @@
 package br.ufsm.redescomp.nutrigest.controller;
 
-import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
-import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
+import br.ufsm.redescomp.nutrigest.dto.PessoaDto;
+import br.ufsm.redescomp.nutrigest.model.Pessoa;
 import br.ufsm.redescomp.nutrigest.service.PessoaService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
+@RequestMapping("/pessoas")
 public class PessoaController {
 
     private final PessoaService pessoaService;
@@ -21,35 +22,35 @@ public class PessoaController {
     }
 
     @Transactional
-    @PostMapping("/v1/pessoas")
-    public ResponseEntity<Void> adicionarPessoa(@RequestBody @Valid PessoaRequest request, UriComponentsBuilder uriBuilder) {
-        var pessoaId = pessoaService.adicionarPessoa(request);
-        var location = uriBuilder.path("/v1/pessoas/{id}").buildAndExpand(pessoaId).toUri();
+    @PostMapping
+    public ResponseEntity<Void> adicionarPessoa(@RequestBody @Valid Pessoa pessoa, UriComponentsBuilder uriBuilder) {
+        pessoaService.adicionarPessoa(pessoa);
+        var location = uriBuilder.path("/pessoas/{id}").buildAndExpand(pessoa.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping("/v1/pessoas")
-    public ResponseEntity<List<PessoaResponse>> getPessoas() {
-        var response = pessoaService.getPessoas();
-        return ResponseEntity.ok(response);
+    @GetMapping
+    public ResponseEntity<List<PessoaDto>> getPessoas() {
+        List<PessoaDto> pessoas = pessoaService.getPessoas();
+        return ResponseEntity.ok(pessoas);
     }
 
-    @GetMapping("/v1/pessoas/{id}")
-    public ResponseEntity<PessoaResponse> getPessoaById(@PathVariable("id") Long id) {
-        var response = pessoaService.getPessoaById(id);
-        return ResponseEntity.ok(response);
+    @GetMapping("/{pessoaId}")
+    public ResponseEntity<PessoaDto> getPessoaById(@PathVariable("pessoaId") Long id) {
+        PessoaDto pessoa = pessoaService.getPessoaById(id);
+        return ResponseEntity.ok(pessoa);
     }
 
     @Transactional
-    @PutMapping("/v1/pessoas/{id}")
-    public ResponseEntity<Void> atualizarPessoa(@PathVariable("id") Long id, @RequestBody @Valid PessoaRequest request) {
-        pessoaService.atualizarPessoa(id, request);
+    @PutMapping("/{pessoaId}")
+    public ResponseEntity<Void> atualizarPessoa(@PathVariable("pessoaId") Long id, @RequestBody @Valid Pessoa pessoa) {
+        pessoaService.atualizarPessoa(id, pessoa);
         return ResponseEntity.noContent().build();
     }
 
     @Transactional
-    @DeleteMapping("/v1/pessoas/{id}")
-    public ResponseEntity<Void> deletarPessoa(@PathVariable("id") Long id) {
+    @DeleteMapping("/{pessoaId}")
+    public ResponseEntity<Void> deletarPessoa(@PathVariable("pessoaId") Long id) {
         pessoaService.deletarPessoa(id);
         return ResponseEntity.noContent().build();
     }

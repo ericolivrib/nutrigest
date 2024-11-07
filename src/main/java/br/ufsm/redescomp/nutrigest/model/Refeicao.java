@@ -1,6 +1,8 @@
 package br.ufsm.redescomp.nutrigest.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -26,10 +28,12 @@ public class Refeicao {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "periodo")
+    @NotNull(message = "Período de realização da refeição é obrigatório")
     private PeriodoRefeicao periodo;
 
     @Column(name = "data")
-    private LocalDate data;
+    @NotNull(message = "Data de realização da refeição é obrigatória")
+    private LocalDate dataRealizacao;
 
     @Column(name = "calorias_totais")
     private Integer caloriasTotais;
@@ -44,6 +48,7 @@ public class Refeicao {
     private Integer gordurasTotais;
 
     @OneToMany(mappedBy = "refeicao")
+    @NotEmpty(message = "Itens da refeição são obrigatórios")
     private List<ItemRefeicao> itens;
 
 }

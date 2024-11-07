@@ -1,8 +1,8 @@
 package br.ufsm.redescomp.nutrigest.controller;
 
-import br.ufsm.redescomp.nutrigest.dto.ItemRefeicaoRequest;
-import br.ufsm.redescomp.nutrigest.dto.RefeicaoRequest;
-import br.ufsm.redescomp.nutrigest.dto.RefeicaoResponse;
+import br.ufsm.redescomp.nutrigest.dto.RefeicaoDto;
+import br.ufsm.redescomp.nutrigest.model.ItemRefeicao;
+import br.ufsm.redescomp.nutrigest.model.Refeicao;
 import br.ufsm.redescomp.nutrigest.service.RefeicaoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,28 +23,28 @@ public class RefeicaoController {
 
     @Transactional
     @PostMapping("/refeicoes")
-    public ResponseEntity<Void> adicionarRefeicao(@RequestBody @Valid RefeicaoRequest request, UriComponentsBuilder uriBuilder) {
-        var refeicaoId = refeicaoService.adicionarRefeicao(request);
-        var uri = uriBuilder.path("/refeicoes/{refeicoesId}").buildAndExpand(refeicaoId).toUri();
+    public ResponseEntity<Void> adicionarRefeicao(@RequestBody @Valid Refeicao refeicao, UriComponentsBuilder uriBuilder) {
+        refeicaoService.adicionarRefeicao(refeicao);
+        var uri = uriBuilder.path("/refeicoes/{refeicoesId}").buildAndExpand(refeicao.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/pessoas/{pessoaId}/refeicoes")
-    public ResponseEntity<List<RefeicaoResponse>> getRefeicoesByUsuario(@PathVariable("pessoaId") Long pessoaId) {
+    public ResponseEntity<List<RefeicaoDto>> getRefeicoesByUsuario(@PathVariable("pessoaId") Long pessoaId) {
         var refeicoes = refeicaoService.getRefeicoesByPessoa(pessoaId);
         return ResponseEntity.ok(refeicoes);
     }
 
     @GetMapping("/refeicoes/{refeicaoId}")
-    public ResponseEntity<RefeicaoResponse> getRefeicaoById(@PathVariable("refeicaoId") Long id) {
+    public ResponseEntity<RefeicaoDto> getRefeicaoById(@PathVariable("refeicaoId") Long id) {
         var refeicoes = refeicaoService.getRefeicaoById(id);
         return ResponseEntity.ok(refeicoes);
     }
 
     @Transactional
     @PutMapping("/refeicoes/{refeicaoId}")
-    public ResponseEntity<Void> atualizarRefeicao(@PathVariable("refeicaoId") Long id, @RequestBody @Valid RefeicaoRequest request) {
-        refeicaoService.atualizarRefeicao(id, request);
+    public ResponseEntity<Void> atualizarRefeicao(@PathVariable("refeicaoId") Long id, @RequestBody @Valid Refeicao refeicao) {
+        refeicaoService.atualizarRefeicao(id, refeicao);
         return ResponseEntity.noContent().build();
     }
 
@@ -56,16 +56,16 @@ public class RefeicaoController {
 
     @Transactional
     @PostMapping("/refeicoes/{refeicaoId}/itens")
-    public ResponseEntity<Void> adicionarItem(@PathVariable("refeicaoId") Long refeicaoId, @RequestBody @Valid ItemRefeicaoRequest request, UriComponentsBuilder uriBuilder) {
-        Long itemId = refeicaoService.adicionarItemRefeicao(refeicaoId, request);
-        var uri = uriBuilder.path("/itens/{itemId}").buildAndExpand(itemId).toUri();
+    public ResponseEntity<Void> adicionarItem(@PathVariable("refeicaoId") Long refeicaoId, @RequestBody @Valid ItemRefeicao item, UriComponentsBuilder uriBuilder) {
+        refeicaoService.adicionarItemRefeicao(refeicaoId, item);
+        var uri = uriBuilder.path("/itens/{itemId}").buildAndExpand(item.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @Transactional
     @PutMapping("/itens/{itemId}")
-    public ResponseEntity<Void> atualizarItem(@PathVariable("itemId") Long id, @RequestBody @Valid ItemRefeicaoRequest request) {
-        refeicaoService.atualizarItemRefeicao(id, request);
+    public ResponseEntity<Void> atualizarItem(@PathVariable("itemId") Long id, @RequestBody @Valid ItemRefeicao item) {
+        refeicaoService.atualizarItemRefeicao(id, item);
         return ResponseEntity.noContent().build();
     }
 

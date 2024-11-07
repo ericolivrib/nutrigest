@@ -1,7 +1,7 @@
 package br.ufsm.redescomp.nutrigest.service;
 
-import br.ufsm.redescomp.nutrigest.dto.PessoaRequest;
-import br.ufsm.redescomp.nutrigest.dto.PessoaResponse;
+import br.ufsm.redescomp.nutrigest.dto.PessoaDto;
+import br.ufsm.redescomp.nutrigest.model.Pessoa;
 import br.ufsm.redescomp.nutrigest.repository.PessoaRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,39 +16,49 @@ public class PessoaService {
         this.pessoaRepository = pessoaRepository;
     }
 
-    public Long adicionarPessoa(PessoaRequest pessoa) {
-        var p =  pessoaRepository.save(pessoa.mapToEntity());
-        return p.getId();
+    public void adicionarPessoa(Pessoa pessoa) {
+        pessoaRepository.save(Pessoa.builder()
+                .nome(pessoa.getNome())
+                .telefone(pessoa.getTelefone())
+                .dataNascimento(pessoa.getDataNascimento())
+                .genero(pessoa.getGenero())
+                .altura(pessoa.getAltura())
+                .peso(pessoa.getPeso())
+                .nivelAtividade(pessoa.getNivelAtividade())
+                .objetivo(pessoa.getObjetivo())
+                .build()
+        );
     }
 
-    public List<PessoaResponse> getPessoas() {
+    public List<PessoaDto> getPessoas() {
         return pessoaRepository.findAll()
                 .stream()
-                .map(PessoaResponse::mapFromEntity)
+                .map(PessoaDto::new)
                 .toList();
     }
 
-    public PessoaResponse getPessoaById(Long id) {
-        return PessoaResponse.mapFromEntity(pessoaRepository.findById(id).orElseThrow());
+    public PessoaDto getPessoaById(Long id) {
+        Pessoa pessoa = pessoaRepository.findById(id).orElseThrow();
+        return new PessoaDto(pessoa);
     }
 
-    public void atualizarPessoa(Long id, PessoaRequest pessoa) {
-        var p = pessoaRepository.findById(id).orElseThrow();
+    public void atualizarPessoa(Long id, Pessoa pessoa) {
+        Pessoa p = pessoaRepository.findById(id).orElseThrow();
 
-        p.setNome(pessoa.nome());
-        p.setTelefone(pessoa.telefone());
-        p.setObjetivo(pessoa.objetivo());
-        p.setAltura(pessoa.altura());
-        p.setPeso(pessoa.peso());
-        p.setDataNascimento(pessoa.dataNascimento());
-        p.setGenero(pessoa.genero());
-        p.setNivelAtividade(pessoa.nivelAtividade());
+        p.setNome(pessoa.getNome());
+        p.setTelefone(pessoa.getTelefone());
+        p.setObjetivo(pessoa.getObjetivo());
+        p.setAltura(pessoa.getAltura());
+        p.setPeso(pessoa.getPeso());
+        p.setDataNascimento(pessoa.getDataNascimento());
+        p.setGenero(pessoa.getGenero());
+        p.setNivelAtividade(pessoa.getNivelAtividade());
 
         pessoaRepository.save(p);
     }
 
     public void deletarPessoa(Long id) {
-        var p = pessoaRepository.findById(id).orElseThrow();
+        Pessoa p = pessoaRepository.findById(id).orElseThrow();
         pessoaRepository.delete(p);
     }
 

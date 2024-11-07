@@ -1,7 +1,7 @@
 package br.ufsm.redescomp.nutrigest.controller;
 
-import br.ufsm.redescomp.nutrigest.dto.AlimentoRequest;
-import br.ufsm.redescomp.nutrigest.dto.AlimentoResponse;
+import br.ufsm.redescomp.nutrigest.dto.AlimentoDto;
+import br.ufsm.redescomp.nutrigest.model.Alimento;
 import br.ufsm.redescomp.nutrigest.service.AlimentoService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -21,27 +21,27 @@ public class AlimentoController {
 
     @Transactional
     @PostMapping("/alimentos")
-    public ResponseEntity<Void> adicionarAlimento(@RequestBody AlimentoRequest request, UriComponentsBuilder uriBuilder) {
-        Long alimentoId = alimentoService.adicionarAlimento(request);
-        var uri = uriBuilder.path("/alimentos/{alimentoId}").buildAndExpand(alimentoId).toUri();
+    public ResponseEntity<Void> adicionarAlimento(@RequestBody Alimento alimento, UriComponentsBuilder uriBuilder) {
+        alimentoService.adicionarAlimento(alimento);
+        var uri = uriBuilder.path("/alimentos/{alimentoId}").buildAndExpand(alimento.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/alimentos")
-    public ResponseEntity<List<AlimentoResponse>> getAlimentos() {
+    public ResponseEntity<List<AlimentoDto>> getAlimentos() {
         var alimentos = alimentoService.getAlimentos();
         return ResponseEntity.ok(alimentos);
     }
 
     @GetMapping("/alimentos/{alimentoId}")
-    public ResponseEntity<AlimentoResponse> getAlimentoById(@PathVariable("alimentoId") Long id) {
+    public ResponseEntity<AlimentoDto> getAlimentoById(@PathVariable("alimentoId") Long id) {
         var alimento = alimentoService.getAlimentoById(id);
         return ResponseEntity.ok(alimento);
     }
 
     @PutMapping("/alimentos/{alimentoId}")
-    public ResponseEntity<Void> atualizarAlimento(@PathVariable("alimentoId") Long id, @RequestBody AlimentoRequest request) {
-        alimentoService.atualizarAlimento(id, request);
+    public ResponseEntity<Void> atualizarAlimento(@PathVariable("alimentoId") Long id, @RequestBody Alimento alimento) {
+        alimentoService.atualizarAlimento(id, alimento);
         return ResponseEntity.noContent().build();
     }
 
