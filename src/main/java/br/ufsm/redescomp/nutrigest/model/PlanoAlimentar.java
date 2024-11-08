@@ -22,11 +22,8 @@ public class PlanoAlimentar {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "pessoa")
+    @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
-
-    @Column(name = "nome")
-    private String nome;
 
     @Column(name = "data_inicial")
     private LocalDate dataInicial;

@@ -1,5 +1,6 @@
 package br.ufsm.redescomp.nutrigest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -59,22 +60,13 @@ public class Pessoa {
     @NotBlank(message = "Objetivo é obrigatório")
     private String objetivo;
 
-    @OneToMany(mappedBy = "pessoa")
-    private List<PreferenciaAlimentar> preferenciasAlimentares;
+    @Embedded
+    private PreferenciaAlimentar preferenciaAlimentar;
 
-    @OneToMany(mappedBy = "pessoa")
+    @OneToMany(mappedBy = "pessoa", fetch = FetchType.EAGER)
     private List<PlanoAlimentar> planosAlimentares;
 
-    @OneToMany(mappedBy = "pessoa")
-    private List<HistoricoSaude> historicosSaude;
-
-    @OneToMany(mappedBy = "pessoa")
+    @OneToMany(mappedBy = "pessoa", fetch = FetchType.EAGER)
     private List<Refeicao> refeicoes;
-
-    @OneToMany(mappedBy = "pessoa")
-    private List<AtividadeFisica> atividadesFisicas;
-
-    @OneToMany(mappedBy = "pessoa")
-    private List<Progresso> progressos;
 
 }

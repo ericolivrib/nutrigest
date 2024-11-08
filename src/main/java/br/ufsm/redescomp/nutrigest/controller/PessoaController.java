@@ -1,6 +1,6 @@
 package br.ufsm.redescomp.nutrigest.controller;
 
-import br.ufsm.redescomp.nutrigest.dto.PessoaDto;
+import br.ufsm.redescomp.nutrigest.dto.PessoaDTO;
 import br.ufsm.redescomp.nutrigest.model.Pessoa;
 import br.ufsm.redescomp.nutrigest.service.PessoaService;
 import jakarta.transaction.Transactional;
@@ -30,14 +30,14 @@ public class PessoaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PessoaDto>> getPessoas() {
-        List<PessoaDto> pessoas = pessoaService.getPessoas();
+    public ResponseEntity<List<PessoaDTO>> getPessoas() {
+        List<PessoaDTO> pessoas = pessoaService.getPessoas();
         return ResponseEntity.ok(pessoas);
     }
 
     @GetMapping("/{pessoaId}")
-    public ResponseEntity<PessoaDto> getPessoaById(@PathVariable("pessoaId") Long id) {
-        PessoaDto pessoa = pessoaService.getPessoaById(id);
+    public ResponseEntity<PessoaDTO> getPessoaById(@PathVariable("pessoaId") Long id) {
+        PessoaDTO pessoa = pessoaService.getPessoaById(id);
         return ResponseEntity.ok(pessoa);
     }
 

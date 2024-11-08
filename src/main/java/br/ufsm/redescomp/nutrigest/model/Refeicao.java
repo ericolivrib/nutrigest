@@ -1,5 +1,6 @@
 package br.ufsm.redescomp.nutrigest.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -47,8 +48,17 @@ public class Refeicao {
     @Column(name = "gorduras_totais")
     private Integer gordurasTotais;
 
-    @OneToMany(mappedBy = "refeicao")
+    @OneToMany(mappedBy = "refeicao", fetch = FetchType.EAGER)
     @NotEmpty(message = "Itens da refeição são obrigatórios")
     private List<ItemRefeicao> itens;
+
+    @PrePersist
+    @PreUpdate
+    public void atualizarMacronutrientes() {
+        carboidratosTotais = itens.stream().mapToInt(ItemRefeicao::getCarboidratos).sum();
+        caloriasTotais = itens.stream().mapToInt(ItemRefeicao::getCalorias).sum();
+        proteinasTotais = itens.stream().mapToInt(ItemRefeicao::getProteinas).sum();
+        gordurasTotais = itens.stream().mapToInt(ItemRefeicao::getGorduras).sum();
+    }
 
 }

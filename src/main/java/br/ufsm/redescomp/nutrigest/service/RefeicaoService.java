@@ -1,5 +1,6 @@
 package br.ufsm.redescomp.nutrigest.service;
 
+import br.ufsm.redescomp.nutrigest.dto.RefeicaoDTO;
 import br.ufsm.redescomp.nutrigest.model.ItemRefeicao;
 import br.ufsm.redescomp.nutrigest.model.Refeicao;
 import br.ufsm.redescomp.nutrigest.repository.ItemRefeicaoRepository;
@@ -34,16 +35,19 @@ public class RefeicaoService {
                         .build()).toList())
                 .build();
 
-        atualizarMacronutrientes(novaRefeicao);
         refeicaoRepository.save(novaRefeicao);
     }
 
-    public List<Refeicao> getRefeicoesByPessoa(Long pessoaId) {
-        return refeicaoRepository.findAllByPessoaId(pessoaId);
+    public List<RefeicaoDTO> getRefeicoesByPessoa(Long pessoaId) {
+        return refeicaoRepository.findAllByPessoaId(pessoaId)
+                .stream()
+                .map(RefeicaoDTO::new)
+                .toList();
     }
 
-    public Refeicao getRefeicaoById(Long refeicaoId) {
-        return refeicaoRepository.findById(refeicaoId).orElseThrow();
+    public RefeicaoDTO getRefeicaoById(Long refeicaoId) {
+        Refeicao refeicao = refeicaoRepository.findById(refeicaoId).orElseThrow();
+        return new RefeicaoDTO(refeicao);
     }
 
     public void atualizarRefeicao(Long refeicaoId, Refeicao refeicao) {
@@ -54,7 +58,6 @@ public class RefeicaoService {
         r.setItens(refeicao.getItens());
 
         refeicaoRepository.save(r);
-        atualizarMacronutrientes(r);
     }
 
     public void deletarRefeicao(Long refeicaoId) {
@@ -79,29 +82,11 @@ public class RefeicaoService {
         i.setGorduras(item.getGorduras());
 
         itemRefeicaoRepository.save(item);
-        atualizarMacronutrientes(item.getRefeicao());
     }
 
     public void deletarItemRefeicao(Long itemId) {
         ItemRefeicao item = itemRefeicaoRepository.findById(itemId).orElseThrow();
         itemRefeicaoRepository.delete(item);
-        atualizarMacronutrientes(item.getRefeicao());
-    }
-
-    private void atualizarMacronutrientes(Refeicao refeicao) {
-        List<ItemRefeicao> itens = refeicao.getItens();
-
-        int carboidratosTotais = itens.stream().map(ItemRefeicao::getCarboidratos).reduce(0, Integer::sum);
-        int caloriasTotais = itens.stream().map(ItemRefeicao::getCalorias).reduce(0, Integer::sum);
-        int proteinasTotais = itens.stream().map(ItemRefeicao::getProteinas).reduce(0, Integer::sum);
-        int gordurasTotais = itens.stream().map(ItemRefeicao::getGorduras).reduce(0, Integer::sum);
-
-        refeicao.setCarboidratosTotais(carboidratosTotais);
-        refeicao.setCaloriasTotais(caloriasTotais);
-        refeicao.setProteinasTotais(proteinasTotais);
-        refeicao.setGordurasTotais(gordurasTotais);
-
-        refeicaoRepository.save(refeicao);
     }
 
 }

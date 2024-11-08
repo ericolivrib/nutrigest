@@ -1,5 +1,6 @@
 package br.ufsm.redescomp.nutrigest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -49,4 +50,10 @@ public class ItemRefeicao {
     @NotNull(message = "Quantidade de gorduras do alimento são obrigatórias")
     private Integer gorduras;
 
+    @PostPersist
+    @PostUpdate
+    @PostRemove
+    public void atualizarMacronutrientesRefeicao() {
+        this.refeicao.atualizarMacronutrientes();
+    }
 }

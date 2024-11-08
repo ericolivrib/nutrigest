@@ -1,29 +1,18 @@
 package br.ufsm.redescomp.nutrigest.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "preferencias")
+@Embeddable
 public class PreferenciaAlimentar {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "preferencia_id")
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "pessoa_id")
-    private Pessoa pessoa;
-
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_alimentar")
     private TipoAlimentar tipoAlimentar;
 
     @Column(name = "intolerante_gluten")

@@ -1,7 +1,8 @@
 package br.ufsm.redescomp.nutrigest.service;
 
-import br.ufsm.redescomp.nutrigest.dto.PessoaDto;
+import br.ufsm.redescomp.nutrigest.dto.PessoaDTO;
 import br.ufsm.redescomp.nutrigest.model.Pessoa;
+import br.ufsm.redescomp.nutrigest.model.PreferenciaAlimentar;
 import br.ufsm.redescomp.nutrigest.repository.PessoaRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +27,25 @@ public class PessoaService {
                 .peso(pessoa.getPeso())
                 .nivelAtividade(pessoa.getNivelAtividade())
                 .objetivo(pessoa.getObjetivo())
-                .build()
-        );
+                        .preferenciaAlimentar(PreferenciaAlimentar.builder()
+                                .tipoAlimentar(pessoa.getPreferenciaAlimentar().getTipoAlimentar())
+                                .intoleranteGluten(pessoa.getPreferenciaAlimentar().isIntoleranteGluten())
+                                .intoleranteLactose(pessoa.getPreferenciaAlimentar().isIntoleranteLactose())
+                                .outrasRestricoes(pessoa.getPreferenciaAlimentar().getOutrasRestricoes())
+                                .build()).
+                build());
     }
 
-    public List<PessoaDto> getPessoas() {
+    public List<PessoaDTO> getPessoas() {
         return pessoaRepository.findAll()
                 .stream()
-                .map(PessoaDto::new)
+                .map(PessoaDTO::new)
                 .toList();
     }
 
-    public PessoaDto getPessoaById(Long id) {
+    public PessoaDTO getPessoaById(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id).orElseThrow();
-        return new PessoaDto(pessoa);
+        return new PessoaDTO(pessoa);
     }
 
     public void atualizarPessoa(Long id, Pessoa pessoa) {
