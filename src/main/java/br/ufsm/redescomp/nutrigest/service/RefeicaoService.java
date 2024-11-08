@@ -4,6 +4,7 @@ import br.ufsm.redescomp.nutrigest.dto.RefeicaoDTO;
 import br.ufsm.redescomp.nutrigest.model.ItemRefeicao;
 import br.ufsm.redescomp.nutrigest.model.Refeicao;
 import br.ufsm.redescomp.nutrigest.repository.ItemRefeicaoRepository;
+import br.ufsm.redescomp.nutrigest.repository.PessoaRepository;
 import br.ufsm.redescomp.nutrigest.repository.RefeicaoRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ public class RefeicaoService {
 
     private final RefeicaoRepository refeicaoRepository;
     private final ItemRefeicaoRepository itemRefeicaoRepository;
+    private final PessoaRepository pessoaRepository;
 
-    public RefeicaoService(RefeicaoRepository refeicaoRepository, ItemRefeicaoRepository itemRefeicaoRepository) {
+    public RefeicaoService(RefeicaoRepository refeicaoRepository, ItemRefeicaoRepository itemRefeicaoRepository, PessoaRepository pessoaRepository) {
         this.refeicaoRepository = refeicaoRepository;
         this.itemRefeicaoRepository = itemRefeicaoRepository;
+        this.pessoaRepository = pessoaRepository;
     }
 
     public void adicionarRefeicao(Refeicao refeicao) {
@@ -25,16 +28,15 @@ public class RefeicaoService {
                 .pessoa(refeicao.getPessoa())
                 .periodo(refeicao.getPeriodo())
                 .dataRealizacao(refeicao.getDataRealizacao())
-                .itens(refeicao.getItens().stream().map((i) -> ItemRefeicao.builder()
-                        .alimento(i.getAlimento())
-                        .quantidade(i.getQuantidade())
-                        .calorias(i.getCalorias())
-                        .carboidratos(i.getCarboidratos())
-                        .gorduras(i.getGorduras())
-                        .proteinas(i.getProteinas())
-                        .build()).toList())
                 .build();
 
+        List<ItemRefeicao> itens = refeicao.getItens()
+                .stream()
+                .map((i) -> ItemRefeicao.builder().alimento(i.getAlimento()).quantidade(i.getQuantidade())
+                        .calorias(i.getCalorias()).carboidratos(i.getCarboidratos()).gorduras(i.getGorduras())
+                        .proteinas(i.getProteinas()).refeicao(novaRefeicao).build()).toList();
+
+        novaRefeicao.setItens(itens);
         refeicaoRepository.save(novaRefeicao);
     }
 
@@ -55,7 +57,6 @@ public class RefeicaoService {
 
         r.setPeriodo(refeicao.getPeriodo());
         r.setDataRealizacao(refeicao.getDataRealizacao());
-        r.setItens(refeicao.getItens());
 
         refeicaoRepository.save(r);
     }

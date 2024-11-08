@@ -54,6 +54,9 @@ public class ItemRefeicao {
     @PostUpdate
     @PostRemove
     public void atualizarMacronutrientesRefeicao() {
-        this.refeicao.atualizarMacronutrientes();
+        refeicao.setCarboidratosTotais(refeicao.getItens().stream().mapToInt(ItemRefeicao::getCarboidratos).sum());
+        refeicao.setCaloriasTotais(refeicao.getItens().stream().mapToInt(ItemRefeicao::getCalorias).sum());
+        refeicao.setProteinasTotais(refeicao.getItens().stream().mapToInt(ItemRefeicao::getProteinas).sum());
+        refeicao.setGordurasTotais(refeicao.getItens().stream().mapToInt(ItemRefeicao::getGorduras).sum());
     }
 }

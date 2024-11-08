@@ -48,17 +48,8 @@ public class Refeicao {
     @Column(name = "gorduras_totais")
     private Integer gordurasTotais;
 
-    @OneToMany(mappedBy = "refeicao", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "refeicao", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @NotEmpty(message = "Itens da refeição são obrigatórios")
     private List<ItemRefeicao> itens;
-
-    @PrePersist
-    @PreUpdate
-    public void atualizarMacronutrientes() {
-        carboidratosTotais = itens.stream().mapToInt(ItemRefeicao::getCarboidratos).sum();
-        caloriasTotais = itens.stream().mapToInt(ItemRefeicao::getCalorias).sum();
-        proteinasTotais = itens.stream().mapToInt(ItemRefeicao::getProteinas).sum();
-        gordurasTotais = itens.stream().mapToInt(ItemRefeicao::getGorduras).sum();
-    }
 
 }
