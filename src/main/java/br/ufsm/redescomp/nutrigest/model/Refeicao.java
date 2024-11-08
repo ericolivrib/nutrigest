@@ -52,4 +52,12 @@ public class Refeicao {
     @NotEmpty(message = "Itens da refeição são obrigatórios")
     private List<ItemRefeicao> itens;
 
+    @PostLoad
+    public void setMacronutrientes() {
+        carboidratosTotais = itens.stream().mapToInt(ItemRefeicao::getCarboidratos).sum();
+        caloriasTotais = itens.stream().mapToInt(ItemRefeicao::getCalorias).sum();
+        proteinasTotais = itens.stream().mapToInt(ItemRefeicao::getProteinas).sum();
+        gordurasTotais = itens.stream().mapToInt(ItemRefeicao::getGorduras).sum();
+    }
+
 }

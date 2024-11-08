@@ -67,9 +67,17 @@ public class RefeicaoService {
     }
 
     public void adicionarItemRefeicao(Long refeicaoId, ItemRefeicao item) {
-        var refeicao = refeicaoRepository.findById(refeicaoId).orElseThrow();
-        item.setRefeicao(refeicao);
-        itemRefeicaoRepository.save(item);
+        Refeicao refeicao = refeicaoRepository.findById(refeicaoId).orElseThrow();
+
+        itemRefeicaoRepository.save(ItemRefeicao.builder()
+                .alimento(item.getAlimento())
+                .quantidade(item.getQuantidade())
+                .calorias(item.getCalorias())
+                .carboidratos(item.getCarboidratos())
+                .gorduras(item.getGorduras())
+                .proteinas(item.getProteinas())
+                .refeicao(refeicao)
+                .build());
     }
 
     public void atualizarItemRefeicao(Long itemId, ItemRefeicao item) {
