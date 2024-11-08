@@ -1,6 +1,5 @@
 package br.ufsm.redescomp.nutrigest.controller;
 
-import br.ufsm.redescomp.nutrigest.dto.RefeicaoDto;
 import br.ufsm.redescomp.nutrigest.model.ItemRefeicao;
 import br.ufsm.redescomp.nutrigest.model.Refeicao;
 import br.ufsm.redescomp.nutrigest.service.RefeicaoService;
@@ -30,13 +29,14 @@ public class RefeicaoController {
     }
 
     @GetMapping("/pessoas/{pessoaId}/refeicoes")
-    public ResponseEntity<List<RefeicaoDto>> getRefeicoesByUsuario(@PathVariable("pessoaId") Long pessoaId) {
+    public ResponseEntity<List<Refeicao>> getRefeicoesByUsuario(@PathVariable("pessoaId") Long pessoaId) {
         var refeicoes = refeicaoService.getRefeicoesByPessoa(pessoaId);
         return ResponseEntity.ok(refeicoes);
     }
 
+    @Transactional
     @GetMapping("/refeicoes/{refeicaoId}")
-    public ResponseEntity<RefeicaoDto> getRefeicaoById(@PathVariable("refeicaoId") Long id) {
+    public ResponseEntity<Refeicao> getRefeicaoById(@PathVariable("refeicaoId") Long id) {
         var refeicoes = refeicaoService.getRefeicaoById(id);
         return ResponseEntity.ok(refeicoes);
     }

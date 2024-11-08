@@ -1,6 +1,5 @@
 package br.ufsm.redescomp.nutrigest.service;
 
-import br.ufsm.redescomp.nutrigest.dto.RefeicaoDto;
 import br.ufsm.redescomp.nutrigest.model.ItemRefeicao;
 import br.ufsm.redescomp.nutrigest.model.Refeicao;
 import br.ufsm.redescomp.nutrigest.repository.ItemRefeicaoRepository;
@@ -21,20 +20,30 @@ public class RefeicaoService {
     }
 
     public void adicionarRefeicao(Refeicao refeicao) {
-        refeicaoRepository.save(refeicao);
-        atualizarMacronutrientes(refeicao);
+        Refeicao novaRefeicao = Refeicao.builder()
+                .pessoa(refeicao.getPessoa())
+                .periodo(refeicao.getPeriodo())
+                .dataRealizacao(refeicao.getDataRealizacao())
+                .itens(refeicao.getItens().stream().map((i) -> ItemRefeicao.builder()
+                        .alimento(i.getAlimento())
+                        .quantidade(i.getQuantidade())
+                        .calorias(i.getCalorias())
+                        .carboidratos(i.getCarboidratos())
+                        .gorduras(i.getGorduras())
+                        .proteinas(i.getProteinas())
+                        .build()).toList())
+                .build();
+
+        atualizarMacronutrientes(novaRefeicao);
+        refeicaoRepository.save(novaRefeicao);
     }
 
-    public List<RefeicaoDto> getRefeicoesByPessoa(Long pessoaId) {
-        return refeicaoRepository.findAllByPessoaId(pessoaId)
-                .stream()
-                .map(RefeicaoDto::new)
-                .toList();
+    public List<Refeicao> getRefeicoesByPessoa(Long pessoaId) {
+        return refeicaoRepository.findAllByPessoaId(pessoaId);
     }
 
-    public RefeicaoDto getRefeicaoById(Long refeicaoId) {
-        Refeicao refeicao = refeicaoRepository.findById(refeicaoId).orElseThrow();
-        return new RefeicaoDto(refeicao);
+    public Refeicao getRefeicaoById(Long refeicaoId) {
+        return refeicaoRepository.findById(refeicaoId).orElseThrow();
     }
 
     public void atualizarRefeicao(Long refeicaoId, Refeicao refeicao) {
