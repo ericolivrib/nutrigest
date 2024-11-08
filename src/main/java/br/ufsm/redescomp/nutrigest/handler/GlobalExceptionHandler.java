@@ -2,6 +2,7 @@ package br.ufsm.redescomp.nutrigest.handler;
 
 import br.ufsm.redescomp.nutrigest.dto.FieldErrorDto;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +21,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             MethodArgumentNotValidException.class,
+            ConstraintViolationException.class,
             HttpMessageNotReadableException.class
     })
     public ResponseEntity<List<FieldErrorDto>> handle400BadRequestError(Exception e) {
