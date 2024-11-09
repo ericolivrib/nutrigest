@@ -22,6 +22,10 @@ public class Pessoa {
     @Column(name = "pessoa_id")
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     @Column(name = "nome")
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
