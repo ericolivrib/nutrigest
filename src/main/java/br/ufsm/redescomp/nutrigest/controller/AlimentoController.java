@@ -45,10 +45,4 @@ public class AlimentoController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/alimentos/{alimentoId}")
-    public ResponseEntity<Void> deletarAlimento(@PathVariable("alimentoId") Long id) {
-        alimentoService.deletarAlimento(id);
-        return ResponseEntity.noContent().build();
-    }
-
 }

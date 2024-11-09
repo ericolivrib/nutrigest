@@ -53,11 +53,4 @@ public class PessoaController {
         return ResponseEntity.noContent().build();
     }
 
-    @Transactional
-    @DeleteMapping("/pessoas/{pessoaId}")
-    public ResponseEntity<Void> deletarPessoa(@PathVariable("pessoaId") Long id) {
-        pessoaService.deletarPessoa(id);
-        return ResponseEntity.noContent().build();
-    }
-
 }
