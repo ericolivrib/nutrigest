@@ -27,12 +27,13 @@ public class PessoaService {
                 .peso(pessoa.getPeso())
                 .nivelAtividade(pessoa.getNivelAtividade())
                 .objetivo(pessoa.getObjetivo())
-                        .preferenciaAlimentar(PreferenciaAlimentar.builder()
-                                .tipoAlimentar(pessoa.getPreferenciaAlimentar().getTipoAlimentar())
-                                .intoleranteGluten(pessoa.getPreferenciaAlimentar().isIntoleranteGluten())
-                                .intoleranteLactose(pessoa.getPreferenciaAlimentar().isIntoleranteLactose())
-                                .outrasRestricoes(pessoa.getPreferenciaAlimentar().getOutrasRestricoes())
-                                .build()).
+                .usuario(pessoa.getUsuario())
+                .preferenciaAlimentar(PreferenciaAlimentar.builder()
+                        .tipoAlimentar(pessoa.getPreferenciaAlimentar().getTipoAlimentar())
+                        .intoleranteGluten(pessoa.getPreferenciaAlimentar().isIntoleranteGluten())
+                        .intoleranteLactose(pessoa.getPreferenciaAlimentar().isIntoleranteLactose())
+                        .outrasRestricoes(pessoa.getPreferenciaAlimentar().getOutrasRestricoes())
+                        .build()).
                 build());
     }
 
@@ -45,6 +46,11 @@ public class PessoaService {
 
     public PessoaDTO getPessoaById(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id).orElseThrow();
+        return new PessoaDTO(pessoa);
+    }
+
+    public PessoaDTO getPessoaByUsuario(Long usuarioId) {
+        Pessoa pessoa = pessoaRepository.findByUsuarioId(usuarioId).orElseThrow();
         return new PessoaDTO(pessoa);
     }
 
